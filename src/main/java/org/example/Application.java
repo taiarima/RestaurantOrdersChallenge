@@ -6,18 +6,17 @@ import java.util.Scanner;
 
 public class Application {
 
-    private static final String ADD = "a";
-    private static final String MARK_COMPLETE = "m";
-    private static final String VIEW = "v";
-    private static final String QUIT = "q";
+    public static final String ADD = "a";
+    public static final String MARK_COMPLETE = "m";
+    public static final String VIEW = "v";
+    public static final String QUIT = "q";
     private final List<Order> orderList = new ArrayList<>();
 
 
     public Application() {}
 
-    public  void run() {
+    public void run(Scanner scanner) {
         System.out.println("Welcome to the Arima Online Ordering System.\n");
-        Scanner scanner = new Scanner(System.in);
         String userInput = "";
         while (!userInput.equals(QUIT)) {
             System.out.printf("""
@@ -46,7 +45,6 @@ public class Application {
         System.out.printf("""
                 You successfully added the following order:
                 %s
-                        
                 %n""", newOrder);
     }
 
@@ -72,7 +70,7 @@ public class Application {
         }
     }
 
-    private  Order findOrderById(int orderId) {
+    private Order findOrderById(int orderId) {
         Order order = null;
         for (Order currentOrder : orderList) {
             if (currentOrder.getOrderId() == orderId) {
@@ -83,7 +81,21 @@ public class Application {
         return order;
     }
 
-    private  void handleAddOrder(Scanner scanner) {
+    private void deleteOrder(int orderId) {
+        Order order;
+        for (int i = 0; i < orderList.size(); i++) {
+            if (orderList.get(i).getOrderId() == orderId) {
+                orderList.remove(i);
+                break;
+            }
+        }
+    }
+
+    private void editOrderDetails(Order order, String newDetails) {
+        order.setOrderDetails(newDetails);
+    }
+
+    private void handleAddOrder(Scanner scanner) {
         String detailsCorrect = "n";
         String orderDetails = "";
         while (!detailsCorrect.equals("y")) {
@@ -136,6 +148,10 @@ public class Application {
                 System.out.println("Invalid input. Please enter a valid order ID as an integer.");
             }
         }
+    }
+
+    public List<Order> getOrderList() {
+        return this.orderList;
     }
 }
 

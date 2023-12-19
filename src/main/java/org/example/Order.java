@@ -2,9 +2,7 @@ package org.example;
 
 public class Order {
 
-
-
-    private static int incrementingCounter;
+    private static int incrementingCounter = 1;
     private final int orderId;
     private String orderDetails;
     private boolean isCompleted;
@@ -43,7 +41,8 @@ public class Order {
         return """
                 Order ID: %d
                 Order Details: %s
-                Status: %s\n
+                Status: %s
+                
                 """.formatted(this.orderId, this.orderDetails, (this.isCompleted ? "Complete" : "In Progress"));
     }
 
