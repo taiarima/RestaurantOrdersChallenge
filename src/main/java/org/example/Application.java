@@ -10,6 +10,8 @@ public class Application {
     public static final String MARK_COMPLETE = "m";
     public static final String VIEW = "v";
     public static final String QUIT = "q";
+    public static final String EDIT = "e";
+    public static final String DELETE = "d";
     private final List<Order> orderList = new ArrayList<>();
 
 
@@ -24,19 +26,95 @@ public class Application {
                         Add Order (%s)
                         View All Orders (%s)
                         Mark an Order as Completed (%s)
+                        Edit order details (%s)
+                        Delete an Order (%s)
                         Quit (%s)""
-                    %n""", ADD, VIEW, MARK_COMPLETE, QUIT);
+                    %n""", ADD, VIEW, MARK_COMPLETE, EDIT, DELETE, QUIT);
             userInput = scanner.nextLine();
             userInput = userInput.toLowerCase();
             switch (userInput) {
                 case ADD -> handleAddOrder(scanner);
                 case VIEW -> handleViewAllOrders();
                 case MARK_COMPLETE -> handleMarkOrderCompleted(scanner);
+                case EDIT -> handleEditDetails(scanner);
+                case DELETE -> handleDeleteOrder(scanner);
                 case QUIT -> System.out.println("Exiting application...");
                 default -> System.out.println("You have not entered a valid input.\n");
             }
         }
         scanner.close();
+    }
+
+    private void handleEditDetails(Scanner scanner) {
+        System.out.println("Please enter the order ID of the order you would like to edit.");
+        // Show current details of that order
+        // Ask for new ones
+        // Confirm
+        // Execute
+        Integer orderId = confirmValidId(scanner);
+        if (orderId == null) {
+            System.out.println("You have not entered a valid order ID. Returning to main menu.\n");
+        } else {
+            Order order = findOrderById(orderId);
+            System.out.printf("""
+                    The current order details for order %d are:
+                    %s
+                    
+                    Please enter the new details you would like save for this order:
+                    """, orderId, order.getOrderDetails());
+        }
+    }
+
+    private void handleDeleteOrder(Scanner scanner) {
+        Integer orderId = null;
+        do {
+            System.out.println("Type the order ID of the order you would like to delete and press enter.");
+            orderId = confirmValidId(scanner);
+            if (orderId != null) {
+                String message = """
+                        You have entered order id %d
+                                        
+                        Would you like to proceed to mark this order as completed? (y/n)
+                                        
+                        %n""".formatted(orderId);
+                if (confirmAction(scanner, message)) {
+                    deleteOrder(orderId);
+                } else {
+                    break;
+                }
+            }
+        } while (orderId == null);
+    }
+
+    private Integer confirmValidId(Scanner scanner) {
+        Integer orderId = null;
+        String inputLine = scanner.nextLine();
+        try {
+            orderId = Integer.parseInt(inputLine);
+            if (orderId < 0 || orderId >= Order.getIncrementingCounter()) {
+                System.out.println("You have not entered a valid order ID.");
+                orderId = null;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid order ID as an integer.");
+        }
+        return orderId;
+    }
+
+    private boolean confirmAction(Scanner scanner, String message) {
+        boolean isConfirmed;
+        System.out.printf(message);
+        String confirmInput = scanner.nextLine();
+        confirmInput = confirmInput.toLowerCase();
+        if (confirmInput.equals("y")) {
+            isConfirmed = true;
+        } else if (confirmInput.equals("n")) {
+            isConfirmed =false;
+        } else {
+            System.out.println("You have not entered a valid input. Returning to main menu.\n");
+            isConfirmed = false;
+        }
+        return isConfirmed;
     }
 
     private  void addOrder(String orderDetails) {
@@ -82,7 +160,6 @@ public class Application {
     }
 
     private void deleteOrder(int orderId) {
-        Order order;
         for (int i = 0; i < orderList.size(); i++) {
             if (orderList.get(i).getOrderId() == orderId) {
                 orderList.remove(i);
