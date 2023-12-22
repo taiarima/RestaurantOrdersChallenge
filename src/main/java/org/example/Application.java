@@ -12,6 +12,7 @@ public class Application {
     public static final String QUIT = "q";
     public static final String EDIT = "e";
     public static final String DELETE = "d";
+    public static final String ACTION_ABORTED = "Action aborted. Returning to main menu";
     private final List<Order> orderList = new ArrayList<>();
 
 
@@ -47,10 +48,6 @@ public class Application {
 
     private void handleEditDetails(Scanner scanner) {
         System.out.println("Please enter the order ID of the order you would like to edit.");
-        // Show current details of that order
-        // Ask for new ones
-        // Confirm
-        // Execute
         Integer orderId = confirmValidId(scanner);
         if (orderId == null) {
             System.out.println("You have not entered a valid order ID. Returning to main menu.\n");
@@ -62,11 +59,24 @@ public class Application {
                     
                     Please enter the new details you would like save for this order:
                     """, orderId, order.getOrderDetails());
+            String newDetails = scanner.nextLine();
+            String message = """
+                    The current order's details will be replaced with the following:
+                    %s
+                    
+                    Press y to confirm, n to abort action and return to main menu.
+                    """.formatted(newDetails);
+            if (confirmAction(scanner, message)) {
+                editOrderDetails(order, newDetails);
+                System.out.println("Order details successfully updated.");
+            } else {
+                System.out.println(ACTION_ABORTED);
+            }
         }
     }
 
     private void handleDeleteOrder(Scanner scanner) {
-        Integer orderId = null;
+        Integer orderId;
         do {
             System.out.println("Type the order ID of the order you would like to delete and press enter.");
             orderId = confirmValidId(scanner);
@@ -74,12 +84,16 @@ public class Application {
                 String message = """
                         You have entered order id %d
                                         
-                        Would you like to proceed to mark this order as completed? (y/n)
+                        Are you sure would like to delete the order?
+                        This action is permanent and cannot be undone!
+                        Press y to confirm, press n to abort action and return to main menu.
                                         
                         %n""".formatted(orderId);
                 if (confirmAction(scanner, message)) {
                     deleteOrder(orderId);
+                    System.out.printf("Order #%d successfully deleted\n", orderId);
                 } else {
+                    System.out.println(ACTION_ABORTED);
                     break;
                 }
             }
@@ -109,7 +123,7 @@ public class Application {
         if (confirmInput.equals("y")) {
             isConfirmed = true;
         } else if (confirmInput.equals("n")) {
-            isConfirmed =false;
+            isConfirmed = false;
         } else {
             System.out.println("You have not entered a valid input. Returning to main menu.\n");
             isConfirmed = false;
@@ -123,7 +137,7 @@ public class Application {
         System.out.printf("""
                 You successfully added the following order:
                 %s
-                %n""", newOrder);
+                """, newOrder);
     }
 
     private  void handleViewAllOrders() {
