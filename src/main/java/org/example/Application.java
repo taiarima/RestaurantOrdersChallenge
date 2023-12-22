@@ -3,20 +3,24 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import static org.example.UIConstants.*;
 
 public class Application {
 
-    public static final String ADD = "a";
-    public static final String MARK_COMPLETE = "m";
-    public static final String VIEW = "v";
-    public static final String QUIT = "q";
-    public static final String EDIT = "e";
-    public static final String DELETE = "d";
-    public static final String ACTION_ABORTED = "Action aborted. Returning to main menu";
-    private final List<Order> orderList = new ArrayList<>();
+//    public static final String ADD = "a";
+//    public static final String MARK_COMPLETE = "m";
+//    public static final String VIEW = "v";
+//    public static final String QUIT = "q";
+//    public static final String EDIT = "e";
+//    public static final String DELETE = "d";
+//    public static final String ACTION_ABORTED = "Action aborted. Returning to main menu";
+//    private final List<Order> orderList = new ArrayList<>();
 
+    private final OrderService orderService;
 
-    public Application() {}
+    public Application(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     public void run(Scanner scanner) {
         System.out.println("Welcome to the Arima Online Ordering System.\n");
@@ -131,18 +135,19 @@ public class Application {
         return isConfirmed;
     }
 
-    private  void addOrder(String orderDetails) {
-        Order newOrder = new Order(orderDetails);
-        orderList.add(newOrder);
-        System.out.printf("""
-                You successfully added the following order:
-                %s
-                """, newOrder);
-    }
+//    private  void addOrder(String orderDetails) {
+//        Order newOrder = new Order(orderDetails);
+//        orderList.add(newOrder);
+//        System.out.printf("""
+//                You successfully added the following order:
+//                %s
+//                """, newOrder);
+//    }
 
-    private  void handleViewAllOrders() {
+    private void handleViewAllOrders() {
         System.out.println("Displaying all orders: \n");
-        orderList.forEach((order)->System.out.print(order.toString()));
+//        orderList.forEach((order)->System.out.print(order.toString()));
+        orderService.viewAllOrders();
         System.out.printf("""
                         
                 Process finished. %d orders found.
@@ -203,7 +208,7 @@ public class Application {
                 System.out.println("You have not entered a valid input.");
             }
         }
-        addOrder(orderDetails);
+        orderService.addOrder(orderDetails);
     }
 
     private  void handleMarkOrderCompleted(Scanner scanner) {
@@ -241,9 +246,9 @@ public class Application {
         }
     }
 
-    public List<Order> getOrderList() {
-        return this.orderList;
-    }
+//    public List<Order> getOrderList() {
+//        return this.orderList;
+//    }
 }
 
 

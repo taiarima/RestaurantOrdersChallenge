@@ -1,4 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
+import static org.example.UIConstants.*;
 
 import org.example.Application;
 import org.example.Order;
@@ -21,7 +22,7 @@ class ApplicationTest {
 
     @Test
     void addOrder_AddsOrderToList() {
-        String simulatedInput = app.ADD + "\nTest Order Details\ny\n" + app.QUIT + "\n";
+        String simulatedInput = ADD + "\nTest Order Details\ny\n" + QUIT + "\n";
         InputStream simulatedInputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         Scanner testScanner = new Scanner(simulatedInputStream);
         app.run(testScanner);
