@@ -1,25 +1,46 @@
 package org.example;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Entity
+@Table(name = "orders") // Adjust the table name as necessary
 public class Order {
 
-    private static int incrementingCounter = 1;
-    private final int orderId;
-    private String orderDetails;
-    private boolean isCompleted;
-    private final LocalDateTime creationDateTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int orderId;
 
+    @Column(name = "order_details")
+    private String orderDetails;
+
+    @Column(name = "is_completed")
+    private boolean isCompleted;
+
+    @Column(name = "creation_date_time")
+    private LocalDateTime creationDateTime;
+
+    // Constructor for Hibernate
+    protected Order() {
+    }
+
+    // Constructor when using the in-memory order service
     public Order(String orderDetails) {
         this.orderDetails = orderDetails;
-        this.orderId = incrementingCounter++;
         this.creationDateTime = LocalDateTime.now();
+        this.isCompleted = false;
     }
 
-    public static int getIncrementingCounter() {
-        return incrementingCounter;
+    // Constructor used when creating Order objects from database data
+    public Order(int orderId, String orderDetails, boolean isCompleted, LocalDateTime creationDateTime) {
+        this.orderId = orderId;
+        this.orderDetails = orderDetails;
+        this.isCompleted = isCompleted;
+        this.creationDateTime = creationDateTime;
     }
+
     public String getOrderDetails() {
         return orderDetails;
     }
