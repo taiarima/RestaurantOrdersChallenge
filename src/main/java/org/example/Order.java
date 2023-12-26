@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Entity
-@Table(name = "orders") // Adjust the table name as necessary
+@Table(name = "orders")
 public class Order {
 
     @Id
