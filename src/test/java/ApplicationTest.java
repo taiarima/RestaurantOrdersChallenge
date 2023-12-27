@@ -1,15 +1,5 @@
-import static org.junit.jupiter.api.Assertions.*;
-import static org.example.UIConstants.*;
-
 import org.example.Application;
-import org.example.Order;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Scanner;
 
 class ApplicationTest {
     // Arrange, Act, Assert

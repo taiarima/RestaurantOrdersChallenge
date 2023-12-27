@@ -1,13 +1,13 @@
-package org.example;
+package org.example.config;
+
+import org.example.util.ConfigLoader;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.io.FileInputStream;
-import java.io.IOException;
 
-
+// This class is not being used. I am leaving it here as this is a practice project.
 public class DatabaseConnection {
 
 
@@ -30,7 +30,6 @@ public class DatabaseConnection {
 //            loadProperties();
 //        } catch (IOException e) {
 //            e.printStackTrace();
-//            // Handle exception or rethrow as needed
 //        }
 //    }
 //

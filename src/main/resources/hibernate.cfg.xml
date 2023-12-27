@@ -16,7 +16,7 @@
         <property name="show_sql">true</property>
 
         <!-- Add annotated entity classes here -->
-        <mapping class="org.example.Order"/>
+        <mapping class="org.example.model.Order"/>
         <!-- Other entity classes -->
     </session-factory>
 </hibernate-configuration>

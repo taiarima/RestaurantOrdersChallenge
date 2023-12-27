@@ -1,5 +1,6 @@
-package org.example;
+package org.example.util;
 
+import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
 
@@ -16,6 +17,7 @@ public class HibernateUtil {
             // Apply database properties from ConfigLoader
             Properties props = ConfigLoader.getProperties();
             configuration.setProperties(props);
+            configuration.addAnnotatedClass(org.example.model.Order.class);
 
             return configuration.buildSessionFactory();
 
@@ -27,5 +29,15 @@ public class HibernateUtil {
 
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
+    }
+
+    public static <T> T doInSession(HibernateSessionFunction<T> function) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            try {
+                return function.apply(session);
+            } catch (Exception e) {
+                throw e;
+            }
+        }
     }
 }

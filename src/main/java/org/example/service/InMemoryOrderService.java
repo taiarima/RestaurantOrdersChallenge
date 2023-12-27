@@ -1,4 +1,6 @@
-package org.example;
+package org.example.service;
+
+import org.example.model.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +52,14 @@ public class InMemoryOrderService implements OrderService {
     }
 
     @Override
-    public void viewAllOrders() {
-        orderList.forEach((order)->System.out.print(order.toString()));
+    public int viewAllOrders() {
+        int numOrders = 0;
+        for (Order order : orderList) {
+            System.out.print(order.toString());
+            numOrders++;
+        }
+
+        return numOrders;
     }
 
     @Override

@@ -1,7 +1,10 @@
 package org.example;
 
+import org.example.model.Order;
+import org.example.service.OrderService;
+
 import java.util.Scanner;
-import static org.example.UIConstants.*;
+import static org.example.config.UIConstants.*;
 
 public class Application {
 
@@ -127,12 +130,12 @@ public class Application {
 
     private void handleViewAllOrders() {
         System.out.println("Displaying all orders: \n");
-        orderService.viewAllOrders();
+        int numOrders = orderService.viewAllOrders();
         System.out.printf("""
                         
                 Process finished. %d orders found.
                         
-                """, orderService.getNumberOrders());
+                """, numOrders);
     }
 
     private void handleAddOrder(Scanner scanner) {

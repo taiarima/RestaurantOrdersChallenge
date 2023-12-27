@@ -1,4 +1,4 @@
-package org.example;
+package org.example.config;
 
 public class UIConstants {
     public static final String ADD = "a";
